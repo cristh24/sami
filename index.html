@@ -1,410 +1,355 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feliz Día del Trabajador 💖</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feliz Día de la Trabajadora 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --rose:    #f472b6;
-      --deep:    #be185d;
-      --blush:   #fce7f3;
-      --gold:    #fbbf24;
-      --light:   #fff0f6;
+      --cream:      #fdf6ef;
+      --white:      #ffffff;
+      --blush:      #faeaf0;
+      --rose:       #d4607a;
+      --rose-deep:  #b5475e;
+      --rose-pale:  #f2c4cf;
+      --gold:       #c9a55a;
+      --text:       #2c1a22;
+      --text-mid:   #6b3f52;
+      --text-soft:  #a07080;
     }
 
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--text); font-family: 'Nunito', sans-serif; overflow-x: hidden; }
 
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #1a0a2e 0%, #2d0a4e 40%, #1a0a2e 100%);
-      font-family: 'Quicksand', sans-serif;
-      overflow-x: hidden;
-      color: #fff;
+    /* ─── PETALS ─── */
+    #petals { position: fixed; inset: 0; pointer-events: none; z-index: 50; overflow: hidden; }
+    .petal { position: absolute; top: -30px; animation: petalDrift linear infinite; }
+    @keyframes petalDrift {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg) translateX(0); }
+      8%   { opacity: 0.65; }
+      92%  { opacity: 0.45; }
+      100% { opacity: 0; transform: translateY(105vh) rotate(500deg) translateX(45px); }
     }
 
-    /* ── STARS background ── */
-    #stars-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; min-height: 100svh;
+      display: grid; grid-template-columns: 55% 45%;
+      overflow: hidden;
     }
-
-    /* ── CONFETTI canvas ── */
-    #confetti-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 10;
+    .hero-img { position: relative; overflow: hidden; }
+    .hero-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 22%;
+      transform: scale(1.08);
+      transition: transform 12s ease;
     }
-
-    /* ── Layout ── */
-    .page {
+    .hero-img img.kb { transform: scale(1); }
+    .hero-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 50%, var(--cream) 96%);
+    }
+    .hero-content {
+      background: var(--cream);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 64px 56px 64px 28px;
       position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px 80px;
-      gap: 48px;
     }
-
-    /* ── Crown badge ── */
-    .crown-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      animation: floatY 3s ease-in-out infinite;
+    .hero-content::before {
+      content: ''; position: absolute; top: 0; left: -80px;
+      width: 100px; height: 100%;
+      background: linear-gradient(to right, transparent, var(--cream));
+      pointer-events: none;
     }
-    .crown { font-size: 4rem; filter: drop-shadow(0 0 16px #fbbf24); }
     .badge {
-      background: linear-gradient(90deg, var(--gold), #f59e0b, var(--gold));
-      background-size: 200% auto;
-      animation: shimmer 2.5s linear infinite;
-      color: #1a0a2e;
-      font-weight: 700;
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 4px 16px;
-      border-radius: 20px;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      color: #fff;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      padding: 7px 20px; border-radius: 40px; width: fit-content;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 20px rgba(212,96,122,0.42);
     }
-
-    /* ── Main headline ── */
-    .headline-block { text-align: center; }
-    .headline-top {
-      font-family: 'Quicksand', sans-serif;
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 8px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 4.4rem);
+      line-height: 1.12; color: var(--text); margin-bottom: 14px;
     }
-    .headline-main {
+    .hero-title em { font-style: italic; color: var(--rose); }
+    .hero-sub {
       font-family: 'Dancing Script', cursive;
-      font-size: clamp(2.8rem, 9vw, 6rem);
-      background: linear-gradient(135deg, #fce7f3, var(--rose), var(--gold), #fce7f3);
-      background-size: 300% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s linear infinite, fadeUp 1s 0.4s both;
-      line-height: 1.1;
-      text-shadow: none;
+      font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+      color: var(--text-mid); margin-bottom: 36px;
     }
-    .headline-sub {
-      font-family: 'Dancing Script', cursive;
-      font-size: clamp(1.4rem, 4vw, 2.2rem);
-      color: #fce7f3;
-      margin-top: 8px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
+    .deco-hr { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .deco-line { height: 1px; width: 60px; background: linear-gradient(to right, var(--rose-pale), transparent); }
+    .deco-line.r { background: linear-gradient(to left, var(--rose-pale), transparent); }
+    .hero-note { font-size: 0.78rem; font-weight: 600; color: var(--text-soft); letter-spacing: 3px; text-transform: uppercase; }
+
+    .scroll-cue {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      color: var(--text-soft); font-size: 0.64rem; letter-spacing: 2px; text-transform: uppercase;
+      animation: cueFloat 2.2s ease-in-out infinite;
+    }
+    .scroll-cue::after { content: '↓'; font-size: 1rem; }
+    @keyframes cueFloat {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
     }
 
-    /* ── Photo card ── */
-    .photo-card {
-      position: relative;
-      width: min(320px, 88vw);
-      opacity: 0;
-      animation: fadeUp 1s 1s forwards;
-    }
-    .photo-ring {
-      position: absolute;
-      inset: -12px;
-      border-radius: 50% 40% 50% 40% / 40% 50% 40% 50%;
-      background: conic-gradient(var(--rose), var(--gold), #c084fc, var(--rose));
-      animation: spin 8s linear infinite;
-      z-index: -1;
-      filter: blur(2px);
-    }
-    .photo-frame {
-      border-radius: 50% 38% 50% 38% / 38% 50% 38% 50%;
-      overflow: hidden;
-      border: 4px solid rgba(255,255,255,0.25);
-      box-shadow:
-        0 0 40px rgba(244,114,182,0.5),
-        0 0 80px rgba(192,132,252,0.25),
-        inset 0 0 20px rgba(255,255,255,0.05);
-      aspect-ratio: 3/4;
-    }
-    .photo-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      transition: transform 0.6s ease;
-    }
-    .photo-card:hover .photo-frame img { transform: scale(1.04); }
+    /* ─── SECTION BASE ─── */
+    .sec { padding: 110px 24px; }
+    .sec-inner { max-width: 1100px; margin: 0 auto; }
+    .sec-label { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--rose); margin-bottom: 10px; }
+    .sec-h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 2.9rem); color: var(--text); margin-bottom: 16px; }
+    .sec-h2 em { font-style: italic; color: var(--rose); }
 
-    /* floating hearts around photo */
-    .heart {
-      position: absolute;
-      font-size: 1.4rem;
-      animation: floatHeart 4s ease-in-out infinite;
-      pointer-events: none;
+    /* ─── MESSAGE ─── */
+    .sec-msg { background: var(--white); }
+    .msg-inner { max-width: 740px; margin: 0 auto; text-align: center; }
+    .qmark {
+      font-family: 'Playfair Display', serif; font-size: 9rem; line-height: 0.35;
+      color: var(--rose-pale); display: block; margin-bottom: 36px;
     }
-    .heart:nth-child(2) { top: -10px; left: -10px; animation-delay: 0s; }
-    .heart:nth-child(3) { top: 20%; right: -18px; animation-delay: 0.8s; }
-    .heart:nth-child(4) { bottom: 15%; left: -18px; animation-delay: 1.6s; }
-    .heart:nth-child(5) { bottom: -10px; right: 20%; animation-delay: 2.4s; }
+    .msg-body { font-size: clamp(1rem, 1.8vw, 1.16rem); line-height: 2.15; color: var(--text-mid); font-weight: 400; }
+    .msg-body strong { color: var(--rose); font-weight: 700; }
+    .msg-body .it { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.08em; color: var(--text); }
+    .msg-end { margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .big-heart { font-size: 4rem; display: block; animation: hb 1.5s ease-in-out infinite; }
+    @keyframes hb {
+      0%,100% { transform: scale(1); }
+      14%     { transform: scale(1.22); }
+      28%     { transform: scale(1); }
+      42%     { transform: scale(1.14); }
+    }
+    .sig { font-family: 'Dancing Script', cursive; font-size: 1.75rem; color: var(--text-mid); }
 
-    /* ── Message card ── */
-    .message-card {
-      max-width: 560px;
-      width: 100%;
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(244,114,182,0.3);
-      border-radius: 24px;
-      padding: 36px 32px;
-      text-align: center;
-      box-shadow: 0 8px 40px rgba(244,114,182,0.15);
-      opacity: 0;
-      animation: fadeUp 1s 1.4s forwards;
+    /* ─── FEATURED ─── */
+    .sec-feat { background: var(--cream); }
+    .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .feat-frame {
+      border-radius: 24px; overflow: hidden; aspect-ratio: 3/4; position: relative;
+      box-shadow: 20px 20px 0 var(--blush), 0 16px 52px rgba(212,96,122,0.18);
     }
-    .message-card p {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      line-height: 1.9;
-      color: #fce7f3;
-      font-weight: 600;
-    }
-    .message-card .highlight {
-      color: var(--gold);
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.4em;
-    }
-    .message-card .sig {
-      display: block;
-      margin-top: 20px;
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.5rem;
-      color: var(--rose);
-    }
+    .feat-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; transition: transform 0.7s ease; }
+    .feat-frame:hover img { transform: scale(1.04); }
+    .feat-copy p { font-size: 1.08rem; line-height: 2; color: var(--text-mid); }
+    .feat-copy p strong { color: var(--rose); }
+    .feat-copy .deco-hr { margin: 24px 0; }
 
-    /* ── Petals ── */
-    .petal-layer {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      overflow: hidden;
+    /* ─── GALLERY ─── */
+    .sec-gal { background: var(--blush); }
+    .gal-head { text-align: center; margin-bottom: 56px; }
+    .gal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .gal-item {
+      border-radius: 18px; overflow: hidden; aspect-ratio: 3/4; cursor: pointer; position: relative;
+      box-shadow: 0 4px 20px rgba(44,26,34,0.07);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
-    .petal {
-      position: absolute;
-      top: -40px;
-      font-size: 1.2rem;
-      animation: petalFall linear infinite;
-      opacity: 0.8;
+    .gal-item:hover { transform: translateY(-8px); box-shadow: 0 16px 44px rgba(212,96,122,0.28); }
+    .gal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .gal-item:hover img { transform: scale(1.06); }
+    .gal-ov {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(180,71,94,0.58) 0%, transparent 55%);
+      opacity: 0; transition: opacity 0.35s ease;
+      display: flex; align-items: flex-end; padding: 18px;
     }
+    .gal-item:hover .gal-ov { opacity: 1; }
+    .gal-ov span { font-size: 1.6rem; }
 
-    /* ── Animations ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ─── LIGHTBOX ─── */
+    .lb {
+      position: fixed; inset: 0; z-index: 900;
+      background: rgba(18,8,12,0.93); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
-    @keyframes floatY {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-12px); }
-    }
-    @keyframes floatHeart {
-      0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
-      50%       { transform: translateY(-14px) scale(1.15); opacity: 1; }
-    }
-    @keyframes shimmer {
-      to { background-position: 200% center; }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes petalFall {
-      0%   { transform: translateY(-40px) rotate(0deg) translateX(0); opacity: 1; }
-      80%  { opacity: 0.7; }
-      100% { transform: translateY(110vh) rotate(720deg) translateX(60px); opacity: 0; }
-    }
+    .lb.open { opacity: 1; pointer-events: all; }
+    .lb img { max-width: 92vw; max-height: 92svh; border-radius: 18px; box-shadow: 0 0 80px rgba(212,96,122,0.35); object-fit: contain; }
+    .lb-x { position: absolute; top: 20px; right: 28px; background: none; border: none; color: #fff; font-size: 2.2rem; cursor: pointer; line-height: 1; opacity: 0.75; transition: opacity 0.2s; }
+    .lb-x:hover { opacity: 1; }
 
-    /* ── Responsive ── */
-    @media (max-width: 480px) {
-      .message-card { padding: 24px 18px; }
+    /* ─── FOOTER ─── */
+    footer {
+      background: linear-gradient(140deg, var(--rose-deep), var(--rose));
+      color: #fff; text-align: center; padding: 96px 24px;
+    }
+    .footer-heart { font-size: 4.6rem; display: block; margin-bottom: 18px; }
+    footer h3 { font-family: 'Dancing Script', cursive; font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 600; margin-bottom: 10px; }
+    footer small { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.52; }
+
+    /* ─── REVEAL ─── */
+    .rv { opacity: 0; transform: translateY(36px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .rv.in { opacity: 1; transform: none; }
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.32s}
+    .d4{transition-delay:.44s}.d5{transition-delay:.56s}.d6{transition-delay:.68s}
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-img { height: 70svh; }
+      .hero-img::after { background: linear-gradient(to bottom, transparent 52%, var(--cream) 96%); }
+      .hero-content { padding: 44px 28px 68px; }
+      .hero-content::before { display: none; }
+      .feat-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+    @media (max-width: 560px) {
+      .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .sec { padding: 72px 20px; }
+      .feat-frame { box-shadow: 12px 12px 0 var(--blush), 0 8px 28px rgba(212,96,122,0.14); }
     }
   </style>
 </head>
 <body>
 
-  <!-- background canvases -->
-  <canvas id="stars-canvas"></canvas>
-  <canvas id="confetti-canvas"></canvas>
+<div id="petals"></div>
 
-  <!-- falling petals -->
-  <div class="petal-layer" id="petal-layer"></div>
-
-  <main class="page">
-
-    <!-- crown -->
-    <div class="crown-wrap">
-      <div class="crown">👑</div>
-      <div class="badge">1 de Mayo · Día del Trabajador</div>
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero">
+  <div class="hero-img">
+    <img id="hero-photo" src="img/hero.jpg" alt="Sami"/>
+  </div>
+  <div class="hero-content">
+    <span class="badge">🌹 1 de Mayo · Día de la Trabajadora</span>
+    <h1 class="hero-title">Feliz Día<br/>de la<br/><em>Trabajadora</em></h1>
+    <p class="hero-sub">a la más linda del mundo</p>
+    <div class="deco-hr">
+      <div class="deco-line"></div>
+      <span>🌸</span>
+      <div class="deco-line r"></div>
     </div>
+    <span class="hero-note">Con todo mi amor</span>
+  </div>
+  <div class="scroll-cue">ver más</div>
+</header>
 
-    <!-- headline -->
-    <div class="headline-block">
-      <div class="headline-top">Para ti, con todo mi amor</div>
-      <h1 class="headline-main">Feliz Día de<br/>la Trabajadora</h1>
-      <div class="headline-sub">a la más linda del mundo 💖</div>
+<!-- ══════════════ MENSAJE ══════════════ -->
+<section class="sec sec-msg">
+  <div class="msg-inner">
+    <span class="qmark rv">"</span>
+    <p class="msg-body rv d1">
+      Sé que quizás no te consideras trabajadora en el sentido tradicional,
+      pero <strong>antes de decirlo</strong>, detente un momento.<br/><br/>
+      Piensa en todo lo que haces cada día: cuidas, organizas, das,
+      te entregas a tu familia con una
+      <span class="it">dedicación que no tiene horarios ni días libres</span>.
+      Eso <strong>es trabajo</strong>, y del más bonito que existe.<br/><br/>
+      Por eso quiero desearte <strong>Feliz Día de la Trabajadora</strong>,
+      aunque llegue un poco tarde — el día estuvo muy ocupado,
+      pero no podía dejarlo pasar sin decirte lo
+      <strong>especial</strong> que eres.<br/><br/>
+      <span class="it">Feliz día a la niña más linda y trabajadora del mundo.</span>
+    </p>
+    <div class="msg-end rv d2">
+      <span class="big-heart">❤️</span>
+      <span class="sig">Con todo mi cariño</span>
     </div>
+  </div>
+</section>
 
-    <!-- photo -->
-    <div class="photo-card">
-      <div class="photo-ring"></div>
-      <span class="heart">🌸</span>
-      <span class="heart">💕</span>
-      <span class="heart">🌷</span>
-      <span class="heart">✨</span>
-      <div class="photo-frame">
-        <img src="sami caminando.jpeg" alt="Sami" />
-      </div>
+<!-- ══════════════ FOTO DESTACADA ══════════════ -->
+<section class="sec sec-feat">
+  <div class="feat-grid sec-inner">
+    <div class="feat-frame rv">
+      <img src="img/featured.jpg" alt="Sami"/>
     </div>
-
-    <!-- message -->
-    <div class="message-card">
+    <div class="feat-copy rv d1">
+      <span class="sec-label">Sus momentos</span>
+      <h2 class="sec-h2">Donde vayas,<br/><em>todo brilla contigo</em></h2>
+      <div class="deco-hr"><div class="deco-line"></div><span>🌷</span></div>
       <p>
-        Antes de que digas que no eres una trabajadora,<br/>
-        <span class="highlight">piensa en todo lo que haces</span> en casa<br/>
-        y con tu familia cada día. 🏠<br/><br/>
-        Por eso digo que <span class="highlight">sí lo eres</span>,<br/>
-        y quiero desearte feliz día. 🌸<br/><br/>
-        Perdón por decírtelo tarde,<br/>
-        pero estaba ocupado durante el día. 🥺<br/><br/>
-        <span class="highlight">Feliz día a la niña más linda<br/>y trabajadora del mundo.</span>
-        <span class="sig">❤️</span>
+        Cada fotografía te captura como eres:
+        <strong>libre, radiante y llena de vida</strong>.
+        Donde quiera que vayas, llevas contigo esa energía
+        que hace que todo a tu alrededor se vea más bonito. 🌸<br/><br/>
+        No necesitas un título ni un horario de nueve a cinco
+        para ser una trabajadora extraordinaria —
+        <strong>lo que haces cada día lo dice todo</strong>.
       </p>
     </div>
+  </div>
+</section>
 
-  </main>
+<!-- ══════════════ GALERÍA ══════════════ -->
+<section class="sec sec-gal">
+  <div class="sec-inner">
+    <div class="gal-head rv">
+      <span class="sec-label">Galería</span>
+      <h2 class="sec-h2">Sus <em>momentos más lindos</em> ✨</h2>
+    </div>
+    <div class="gal-grid" id="gal"></div>
+  </div>
+</section>
 
-  <script>
-    // ── STARS ──────────────────────────────────────────────────
-    (function () {
-      const cvs = document.getElementById('stars-canvas');
-      const ctx = cvs.getContext('2d');
-      let stars = [];
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <span class="footer-heart">❤️</span>
+  <h3>Feliz Día de la Trabajadora más linda del mundo</h3>
+  <small>1 de Mayo · Con todo mi amor</small>
+</footer>
 
-      function resize() {
-        cvs.width  = window.innerWidth;
-        cvs.height = window.innerHeight;
-        stars = Array.from({ length: 180 }, () => ({
-          x: Math.random() * cvs.width,
-          y: Math.random() * cvs.height,
-          r: Math.random() * 1.6 + 0.3,
-          a: Math.random(),
-          spd: Math.random() * 0.008 + 0.003,
-          dir: Math.random() > 0.5 ? 1 : -1
-        }));
-      }
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <button class="lb-x" id="lb-x">✕</button>
+  <img id="lb-img" src="" alt=""/>
+</div>
 
-      function drawStars() {
-        ctx.clearRect(0, 0, cvs.width, cvs.height);
-        stars.forEach(s => {
-          s.a += s.spd * s.dir;
-          if (s.a > 1 || s.a < 0.1) s.dir *= -1;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,${s.a})`;
-          ctx.fill();
-        });
-        requestAnimationFrame(drawStars);
-      }
+<script>
+  // Ken Burns en hero
+  window.addEventListener('load', () => {
+    document.getElementById('hero-photo').classList.add('kb');
+  });
 
-      window.addEventListener('resize', resize);
-      resize();
-      drawStars();
-    })();
+  // Pétalos flotantes
+  const EMOJIS = ['🌸','🌷','🌺','💮','🌹'];
+  const pc = document.getElementById('petals');
+  for (let i = 0; i < 16; i++) {
+    const s = document.createElement('span');
+    s.className = 'petal';
+    s.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    s.style.cssText = `left:${Math.random()*100}%;font-size:${0.6+Math.random()*0.7}rem;animation-duration:${11+Math.random()*10}s;animation-delay:${Math.random()*18}s;`;
+    pc.appendChild(s);
+  }
 
-    // ── CONFETTI ───────────────────────────────────────────────
-    (function () {
-      const cvs = document.getElementById('confetti-canvas');
-      const ctx = cvs.getContext('2d');
-      const COLORS = ['#f472b6','#fbbf24','#c084fc','#34d399','#60a5fa','#fce7f3','#fff'];
-      let pieces = [];
-      let launched = false;
+  // Galería
+  const PHOTOS = [
+    { src: 'img/photo-1.jpg', pos: 'center top'  },
+    { src: 'img/photo-2.jpg', pos: 'center 28%'  },
+    { src: 'img/photo-3.jpg', pos: 'center 32%'  },
+    { src: 'img/photo-4.jpg', pos: 'center 28%'  },
+    { src: 'img/photo-5.jpg', pos: 'center 26%'  },
+    { src: 'img/photo-6.jpg', pos: 'center 20%'  },
+  ];
+  const DELAYS = ['d1','d2','d3','d4','d5','d6'];
+  const grid = document.getElementById('gal');
+  PHOTOS.forEach(({ src, pos }, i) => {
+    const div = document.createElement('div');
+    div.className = `gal-item rv ${DELAYS[i]}`;
+    div.innerHTML = `<img src="${src}" alt="" loading="lazy" style="object-position:${pos}"/><div class="gal-ov"><span>🔍</span></div>`;
+    div.addEventListener('click', () => openLb(src));
+    grid.appendChild(div);
+  });
 
-      function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
-      window.addEventListener('resize', resize);
-      resize();
+  // Lightbox
+  const lb    = document.getElementById('lb');
+  const lbImg = document.getElementById('lb-img');
+  function openLb(src) { lbImg.src = src; lb.classList.add('open'); }
+  function closeLb()   { lb.classList.remove('open'); }
+  document.getElementById('lb-x').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 
-      function spawn(n) {
-        for (let i = 0; i < n; i++) {
-          pieces.push({
-            x: Math.random() * cvs.width,
-            y: -10,
-            w: Math.random() * 8 + 4,
-            h: Math.random() * 14 + 6,
-            color: COLORS[Math.floor(Math.random() * COLORS.length)],
-            vx: (Math.random() - 0.5) * 3,
-            vy: Math.random() * 3 + 2,
-            rot: Math.random() * Math.PI * 2,
-            rotSpd: (Math.random() - 0.5) * 0.2,
-            life: 1
-          });
-        }
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, cvs.width, cvs.height);
-        pieces.forEach((p, i) => {
-          p.x  += p.vx;
-          p.y  += p.vy;
-          p.vy += 0.05;
-          p.rot += p.rotSpd;
-          if (p.y > cvs.height + 20) pieces.splice(i, 1);
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rot);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-          ctx.restore();
-        });
-        requestAnimationFrame(animate);
-      }
-
-      animate();
-
-      // initial burst
-      setTimeout(() => { spawn(220); }, 600);
-      // continuous trickle
-      setInterval(() => { if (pieces.length < 300) spawn(8); }, 400);
-    })();
-
-    // ── PETALS ─────────────────────────────────────────────────
-    (function () {
-      const layer = document.getElementById('petal-layer');
-      const EMOJIS = ['🌸','🌷','🌺','💮','🌹','✨','💕'];
-      const COUNT  = 22;
-
-      for (let i = 0; i < COUNT; i++) {
-        const el = document.createElement('span');
-        el.className = 'petal';
-        el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-        const left     = Math.random() * 100;
-        const duration = Math.random() * 8 + 7;
-        const delay    = Math.random() * 12;
-        const size     = Math.random() * 0.8 + 0.7;
-        el.style.cssText = `
-          left: ${left}%;
-          font-size: ${size}rem;
-          animation-duration: ${duration}s;
-          animation-delay: ${delay}s;
-        `;
-        layer.appendChild(el);
-      }
-    })();
-  </script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
