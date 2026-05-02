@@ -1,1 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Día del Trabajador 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      --rose:    #f472b6;
+      --deep:    #be185d;
+      --blush:   #fce7f3;
+      --gold:    #fbbf24;
+      --light:   #fff0f6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a0a2e 0%, #2d0a4e 40%, #1a0a2e 100%);
+      font-family: 'Quicksand', sans-serif;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    /* ── STARS background ── */
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── CONFETTI canvas ── */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* ── Layout ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+      gap: 48px;
+    }
+
+    /* ── Crown badge ── */
+    .crown-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      animation: floatY 3s ease-in-out infinite;
+    }
+    .crown { font-size: 4rem; filter: drop-shadow(0 0 16px #fbbf24); }
+    .badge {
+      background: linear-gradient(90deg, var(--gold), #f59e0b, var(--gold));
+      background-size: 200% auto;
+      animation: shimmer 2.5s linear infinite;
+      color: #1a0a2e;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 4px 16px;
+      border-radius: 20px;
+    }
+
+    /* ── Main headline ── */
+    .headline-block { text-align: center; }
+    .headline-top {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .headline-main {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.8rem, 9vw, 6rem);
+      background: linear-gradient(135deg, #fce7f3, var(--rose), var(--gold), #fce7f3);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite, fadeUp 1s 0.4s both;
+      line-height: 1.1;
+      text-shadow: none;
+    }
+    .headline-sub {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: #fce7f3;
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    /* ── Photo card ── */
+    .photo-card {
+      position: relative;
+      width: min(320px, 88vw);
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+    }
+    .photo-ring {
+      position: absolute;
+      inset: -12px;
+      border-radius: 50% 40% 50% 40% / 40% 50% 40% 50%;
+      background: conic-gradient(var(--rose), var(--gold), #c084fc, var(--rose));
+      animation: spin 8s linear infinite;
+      z-index: -1;
+      filter: blur(2px);
+    }
+    .photo-frame {
+      border-radius: 50% 38% 50% 38% / 38% 50% 38% 50%;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,0.25);
+      box-shadow:
+        0 0 40px rgba(244,114,182,0.5),
+        0 0 80px rgba(192,132,252,0.25),
+        inset 0 0 20px rgba(255,255,255,0.05);
+      aspect-ratio: 3/4;
+    }
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform 0.6s ease;
+    }
+    .photo-card:hover .photo-frame img { transform: scale(1.04); }
+
+    /* floating hearts around photo */
+    .heart {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: floatHeart 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .heart:nth-child(2) { top: -10px; left: -10px; animation-delay: 0s; }
+    .heart:nth-child(3) { top: 20%; right: -18px; animation-delay: 0.8s; }
+    .heart:nth-child(4) { bottom: 15%; left: -18px; animation-delay: 1.6s; }
+    .heart:nth-child(5) { bottom: -10px; right: 20%; animation-delay: 2.4s; }
+
+    /* ── Message card ── */
+    .message-card {
+      max-width: 560px;
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(244,114,182,0.3);
+      border-radius: 24px;
+      padding: 36px 32px;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(244,114,182,0.15);
+      opacity: 0;
+      animation: fadeUp 1s 1.4s forwards;
+    }
+    .message-card p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 1.9;
+      color: #fce7f3;
+      font-weight: 600;
+    }
+    .message-card .highlight {
+      color: var(--gold);
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4em;
+    }
+    .message-card .sig {
+      display: block;
+      margin-top: 20px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--rose);
+    }
+
+    /* ── Petals ── */
+    .petal-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      top: -40px;
+      font-size: 1.2rem;
+      animation: petalFall linear infinite;
+      opacity: 0.8;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+    @keyframes floatHeart {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+      50%       { transform: translateY(-14px) scale(1.15); opacity: 1; }
+    }
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes petalFall {
+      0%   { transform: translateY(-40px) rotate(0deg) translateX(0); opacity: 1; }
+      80%  { opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(720deg) translateX(60px); opacity: 0; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .message-card { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- background canvases -->
+  <canvas id="stars-canvas"></canvas>
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- falling petals -->
+  <div class="petal-layer" id="petal-layer"></div>
+
+  <main class="page">
+
+    <!-- crown -->
+    <div class="crown-wrap">
+      <div class="crown">👑</div>
+      <div class="badge">1 de Mayo · Día del Trabajador</div>
+    </div>
+
+    <!-- headline -->
+    <div class="headline-block">
+      <div class="headline-top">Para ti, con todo mi amor</div>
+      <h1 class="headline-main">Feliz Día<br/>del Trabajador</h1>
+      <div class="headline-sub">a la trabajadora más linda que conozco 💖</div>
+    </div>
+
+    <!-- photo -->
+    <div class="photo-card">
+      <div class="photo-ring"></div>
+      <span class="heart">🌸</span>
+      <span class="heart">💕</span>
+      <span class="heart">🌷</span>
+      <span class="heart">✨</span>
+      <div class="photo-frame">
+        <img src="sami caminando.jpeg" alt="Sami" />
+      </div>
+    </div>
+
+    <!-- message -->
+    <div class="message-card">
+      <p>
+        Hoy es tu día, <span class="highlight">Sami</span>.<br/>
+        Cada esfuerzo que das, cada meta que alcanzas,<br/>
+        cada paso que das —como en esa foto— demuestra<br/>
+        lo <span class="highlight">increíble</span> que eres.<br/><br/>
+        Trabajas duro, brillas fuerte, y lo haces todo<br/>
+        con esa energía que te hace <span class="highlight">única</span>. 🌟<br/><br/>
+        Que este día te recuerde lo mucho que vales<br/>
+        y lo orgulloso que me pone conocerte. 💖
+        <span class="sig">— Con todo mi cariño 🌹</span>
+      </p>
+    </div>
+
+  </main>
+
+  <script>
+    // ── STARS ──────────────────────────────────────────────────
+    (function () {
+      const cvs = document.getElementById('stars-canvas');
+      const ctx = cvs.getContext('2d');
+      let stars = [];
+
+      function resize() {
+        cvs.width  = window.innerWidth;
+        cvs.height = window.innerHeight;
+        stars = Array.from({ length: 180 }, () => ({
+          x: Math.random() * cvs.width,
+          y: Math.random() * cvs.height,
+          r: Math.random() * 1.6 + 0.3,
+          a: Math.random(),
+          spd: Math.random() * 0.008 + 0.003,
+          dir: Math.random() > 0.5 ? 1 : -1
+        }));
+      }
+
+      function drawStars() {
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        stars.forEach(s => {
+          s.a += s.spd * s.dir;
+          if (s.a > 1 || s.a < 0.1) s.dir *= -1;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      drawStars();
+    })();
+
+    // ── CONFETTI ───────────────────────────────────────────────
+    (function () {
+      const cvs = document.getElementById('confetti-canvas');
+      const ctx = cvs.getContext('2d');
+      const COLORS = ['#f472b6','#fbbf24','#c084fc','#34d399','#60a5fa','#fce7f3','#fff'];
+      let pieces = [];
+      let launched = false;
+
+      function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
+      window.addEventListener('resize', resize);
+      resize();
+
+      function spawn(n) {
+        for (let i = 0; i < n; i++) {
+          pieces.push({
+            x: Math.random() * cvs.width,
+            y: -10,
+            w: Math.random() * 8 + 4,
+            h: Math.random() * 14 + 6,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            vx: (Math.random() - 0.5) * 3,
+            vy: Math.random() * 3 + 2,
+            rot: Math.random() * Math.PI * 2,
+            rotSpd: (Math.random() - 0.5) * 0.2,
+            life: 1
+          });
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        pieces.forEach((p, i) => {
+          p.x  += p.vx;
+          p.y  += p.vy;
+          p.vy += 0.05;
+          p.rot += p.rotSpd;
+          if (p.y > cvs.height + 20) pieces.splice(i, 1);
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      // initial burst
+      setTimeout(() => { spawn(220); }, 600);
+      // continuous trickle
+      setInterval(() => { if (pieces.length < 300) spawn(8); }, 400);
+    })();
+
+    // ── PETALS ─────────────────────────────────────────────────
+    (function () {
+      const layer = document.getElementById('petal-layer');
+      const EMOJIS = ['🌸','🌷','🌺','💮','🌹','✨','💕'];
+      const COUNT  = 22;
+
+      for (let i = 0; i < COUNT; i++) {
+        const el = document.createElement('span');
+        el.className = 'petal';
+        el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+        const left     = Math.random() * 100;
+        const duration = Math.random() * 8 + 7;
+        const delay    = Math.random() * 12;
+        const size     = Math.random() * 0.8 + 0.7;
+        el.style.cssText = `
+          left: ${left}%;
+          font-size: ${size}rem;
+          animation-duration: ${duration}s;
+          animation-delay: ${delay}s;
+        `;
+        layer.appendChild(el);
+      }
+    })();
+  </script>
+</body>
+</html>
